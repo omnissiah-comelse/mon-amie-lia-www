@@ -1,0 +1,263 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Badge from '../components/Badge.astro';
+import Card from '../components/Card.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ComparisonMatrix from '../components/ComparisonMatrix.astro';
+import ProductPreview from '../components/ProductPreview.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+
+import {
+  siteConfig,
+  heroChecks,
+  heroStats,
+  quickHighlights,
+  studyModes,
+  familyGuardrails,
+  familyOutcomes,
+} from '../data/site';
+
+// Inline SVG icon strings for lucide icons
+const icons = {
+  bookOpen: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>`,
+  shieldCheck: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>`,
+  users: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>`,
+  brain: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg>`,
+  checkCircle2: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`,
+  lightbulb: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>`,
+  search: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`,
+  arrowRight: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`,
+  clock3: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>`,
+  barChart3: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>`,
+};
+
+// Map study mode index to an icon
+const studyModeIcons = [icons.search, icons.bookOpen, icons.brain, icons.lightbulb, icons.checkCircle2];
+
+// Map quick highlight index to an icon
+const quickHighlightIcons = [icons.bookOpen, icons.users, icons.shieldCheck];
+---
+
+<Layout>
+  <SiteHeader />
+
+  <main class="page-shell">
+    <!-- ===== HERO ===== -->
+    <section class="relative overflow-hidden pt-20 pb-16 sm:pt-28 sm:pb-24">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="mx-auto max-w-3xl text-center">
+          <Badge variant="accent">
+            <Fragment set:html={icons.bookOpen.replace('width="24"', 'width="14"').replace('height="24"', 'height="14"')} />
+            Compagnon d'étude pour les 10–14 ans
+          </Badge>
+
+          <h1 class="mt-6 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            {siteConfig.tagline}
+          </h1>
+
+          <p class="mt-6 text-lg text-muted leading-relaxed max-w-2xl mx-auto">
+            {siteConfig.description}
+          </p>
+
+          <!-- Hero checks -->
+          <ul class="mt-8 flex flex-col items-center gap-2.5">
+            {heroChecks.map((check) => (
+              <li class="flex items-center gap-2 text-sm text-muted">
+                <span class="text-accent-foreground">
+                  <Fragment set:html={icons.checkCircle2.replace('width="24"', 'width="16"').replace('height="24"', 'height="16"')} />
+                </span>
+                {check}
+              </li>
+            ))}
+          </ul>
+
+          <!-- CTA buttons -->
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="https://app.mon-amie-lia.fr"
+              class="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:shadow-lg"
+            >
+              Essayer Lia gratuitement
+              <Fragment set:html={icons.arrowRight.replace('width="24"', 'width="16"').replace('height="24"', 'height="16"')} />
+            </a>
+            <a
+              href="#why-lia"
+              class="inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-muted"
+            >
+              Découvrir le produit
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero stats -->
+        <div class="mt-16 grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto">
+          {heroStats.map((stat, i) => (
+            <div class="rounded-[2rem] border border-border bg-surface/70 p-6 text-center backdrop-blur-sm">
+              <div class="flex justify-center mb-3 text-primary">
+                <Fragment set:html={[icons.users, icons.clock3, icons.barChart3][i].replace('width="24"', 'width="20"').replace('height="24"', 'height="20"')} />
+              </div>
+              <div class="font-display text-xl font-bold text-foreground">{stat.value}</div>
+              <p class="mt-1 text-xs text-muted leading-relaxed">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHY LIA — QUICK HIGHLIGHTS ===== -->
+    <section id="why-lia" class="py-20">
+      <div class="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="Pourquoi Lia"
+          title="Une aide concrète, cadrée, disponible chaque soir."
+          description="Lia est pensée pour le quotidien des devoirs. Pas un gadget, pas un chatbot généraliste : un compagnon d'étude encadré."
+        />
+
+        <div class="grid gap-6 sm:grid-cols-3">
+          {quickHighlights.map((h, i) => (
+            <FeatureCard
+              title={h.title}
+              description={h.description}
+              iconSvg={quickHighlightIcons[i]}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STUDY MODES ===== -->
+    <section class="py-20 bg-surface-muted/30">
+      <div class="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="Modes d'étude"
+          title="Cinq façons d'avancer, selon le besoin du moment."
+          description="Lia s'adapte au contexte : débloquer, réviser, s'entraîner, reformuler ou vérifier."
+        />
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {studyModes.map((mode, i) => (
+            <FeatureCard
+              title={mode.title}
+              description={mode.description}
+              iconSvg={studyModeIcons[i]}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== COMPARISON ===== -->
+    <section id="comparison" class="py-20">
+      <div class="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="Comparatif"
+          title="Lia face aux alternatives du quotidien."
+          description="ChatGPT, soutien privé, parents seuls… chacun a sa place. Voici où Lia se positionne."
+        />
+
+        <Card class="overflow-hidden p-0 sm:p-0">
+          <div class="p-4 sm:p-6">
+            <ComparisonMatrix />
+          </div>
+        </Card>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCT PREVIEW ===== -->
+    <section id="preview" class="py-20 bg-surface-muted/30">
+      <div class="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="Aperçu produit"
+          title="Ce que l'enfant voit. Ce que le parent reçoit."
+          description="Un espace d'étude guidé pour l'enfant, un résumé hebdomadaire clair pour le parent."
+        />
+
+        <ProductPreview />
+      </div>
+    </section>
+
+    <!-- ===== GUARDRAILS ===== -->
+    <section id="guardrails" class="py-20">
+      <div class="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="Cadre parental"
+          title="Des choix de conception, pas des promesses vagues."
+          description="Lia intègre des garde-fous dès la conception du produit, pas en option."
+        />
+
+        <div class="grid gap-8 lg:grid-cols-2">
+          <!-- Guardrails list -->
+          <Card>
+            <h3 class="font-display text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+              <span class="text-primary">
+                <Fragment set:html={icons.shieldCheck.replace('width="24"', 'width="20"').replace('height="24"', 'height="20"')} />
+              </span>
+              Ce que Lia ne fait pas
+            </h3>
+            <ul class="space-y-3">
+              {familyGuardrails.map((g) => (
+                <li class="flex items-start gap-3 text-sm text-muted">
+                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-400">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </span>
+                  {g}
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <!-- Outcomes list -->
+          <Card>
+            <h3 class="font-display text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+              <span class="text-accent-foreground">
+                <Fragment set:html={icons.checkCircle2.replace('width="24"', 'width="20"').replace('height="24"', 'height="20"')} />
+              </span>
+              Ce que les familles y gagnent
+            </h3>
+            <ul class="space-y-3">
+              {familyOutcomes.map((o) => (
+                <li class="flex items-start gap-3 text-sm text-muted">
+                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                    <Fragment set:html={icons.checkCircle2.replace('width="24"', 'width="12"').replace('height="24"', 'height="12"')} />
+                  </span>
+                  {o}
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section class="py-20">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Prêt à essayer Lia ?
+        </h2>
+        <p class="mt-4 text-base text-muted leading-relaxed max-w-xl mx-auto">
+          Un compagnon d'étude concret pour les devoirs du soir, avec un cadre pensé pour toute la famille.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="https://app.mon-amie-lia.fr"
+            class="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:shadow-lg"
+          >
+            Accéder à l'app
+            <Fragment set:html={icons.arrowRight.replace('width="24"', 'width="16"').replace('height="24"', 'height="16"')} />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="border-t border-border py-10">
+      <div class="mx-auto max-w-6xl px-6 text-center">
+        <p class="font-display text-sm font-semibold text-foreground">{siteConfig.name}</p>
+        <p class="mt-1 text-xs text-muted">{siteConfig.tagline}</p>
+        <p class="mt-4 text-xs text-muted/60">© {new Date().getFullYear()} {siteConfig.name}. Tous droits réservés.</p>
+      </div>
+    </footer>
+  </main>
+</Layout>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  iconSvg?: string;
+}
+
+const { title, description, iconSvg } = Astro.props;
+---
+
+<div class="rounded-[2rem] border border-border bg-surface p-6 shadow-sm flex flex-col gap-3">
+  {iconSvg && (
+    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+      <Fragment set:html={iconSvg} />
+    </div>
+  )}
+  <h3 class="font-display text-lg font-bold text-foreground">{title}</h3>
+  <p class="text-sm text-muted leading-relaxed">{description}</p>
+</div>

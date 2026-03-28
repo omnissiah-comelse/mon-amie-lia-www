@@ -1,0 +1,27 @@
+---
+interface Props {
+  variant?: 'default' | 'accent' | 'outline' | 'warning';
+  class?: string;
+}
+
+const { variant = 'default', class: className = '' } = Astro.props;
+
+function getVariantClasses(v: string): string {
+  switch (v) {
+    case 'accent':
+      return 'bg-accent text-accent-foreground';
+    case 'outline':
+      return 'border border-border-strong bg-surface text-foreground';
+    case 'warning':
+      return 'bg-amber-50 text-warning border border-amber-200';
+    default:
+      return 'bg-surface-muted text-muted';
+  }
+}
+
+const classes = `inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${getVariantClasses(variant)} ${className}`.trim();
+---
+
+<span class={classes}>
+  <slot />
+</span>
