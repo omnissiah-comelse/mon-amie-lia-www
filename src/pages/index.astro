@@ -14,6 +14,7 @@ import {
   heroStats,
   quickHighlights,
   studyModes,
+  pricingPlan,
   familyGuardrails,
   familyOutcomes,
 } from '../data/site';
@@ -174,6 +175,52 @@ const quickHighlightIcons = [icons.bookOpen, icons.users, icons.shieldCheck];
         />
 
         <ProductPreview />
+      </div>
+    </section>
+
+    <!-- ===== PRICING ===== -->
+    <section id="pricing" class="py-20">
+      <div class="mx-auto max-w-6xl px-6">
+        <SectionHeading
+          eyebrow="Tarifs"
+          title="Combien ça coûte ?"
+          description="Lia est en bêta ouverte. L'accès est gratuit, sans piège, sans carte bancaire."
+        />
+
+        <div class="mx-auto max-w-lg">
+          <Card class="relative overflow-hidden p-8 text-center">
+            <Badge variant="accent">
+              {pricingPlan.badge}
+            </Badge>
+            <div class="mt-6">
+              <span class="font-display text-5xl font-bold text-foreground">{pricingPlan.price}</span>
+              <span class="ml-2 text-base text-muted">{pricingPlan.period}</span>
+            </div>
+            <p class="mt-4 text-sm text-muted leading-relaxed">
+              {pricingPlan.description}
+            </p>
+            <ul class="mt-8 space-y-3 text-left">
+              {pricingPlan.features.map((feature) => (
+                <li class="flex items-center gap-3 text-sm text-foreground">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                    <Fragment set:html={icons.checkCircle2.replace('width="24"', 'width="12"').replace('height="24"', 'height="12"')} />
+                  </span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="https://app.mon-amie-lia.fr"
+              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:shadow-lg"
+            >
+              Essayer Lia gratuitement
+              <Fragment set:html={icons.arrowRight.replace('width="24"', 'width="16"').replace('height="24"', 'height="16"')} />
+            </a>
+            <p class="mt-6 text-xs text-muted/70 leading-relaxed">
+              {pricingPlan.futureNote}
+            </p>
+          </Card>
+        </div>
       </div>
     </section>
 

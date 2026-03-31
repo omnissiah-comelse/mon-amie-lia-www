@@ -9,6 +9,7 @@ export const navLinks = [
   { label: "Pourquoi Lia", href: "#why-lia" },
   { label: "Comparatif", href: "#comparison" },
   { label: "Aperçu produit", href: "#preview" },
+  { label: "Tarifs", href: "#pricing" },
   { label: "Cadre parental", href: "#guardrails" },
 ] as const;
 
@@ -182,6 +183,21 @@ export const weeklySummaryPreview = {
     "Prévoir 15 minutes samedi pour revoir les fractions équivalentes.",
     "Peu de soutien externe nécessaire cette semaine.",
   ],
+} as const;
+
+export const pricingPlan = {
+  badge: "Bêta ouverte",
+  price: "Gratuit",
+  period: "pendant toute la bêta",
+  description: "Lia est en phase de test avec de vraies familles. L'accès est entièrement gratuit, sans engagement, sans carte bancaire.",
+  features: [
+    "Accès complet aux 5 modes d'étude",
+    "Résumés hebdomadaires pour les parents",
+    "Jusqu'à 3 enfants par compte",
+    "Supervision parentale native",
+    "Aucune carte bancaire requise",
+  ],
+  futureNote: "Après la bêta, Lia proposera un abonnement simple et transparent. Les familles bêta seront prévenues à l'avance.",
 } as const;
 
 export const familyGuardrails = [
